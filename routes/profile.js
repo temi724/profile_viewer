@@ -119,10 +119,11 @@ router.get('/', async (req, res) => {
     res.end()
 
 })
-router.get('/:id', async (req, res) => {
-    const profile_id = await Candidate.findOne({ _id: req.params.id })
-    if (!profile_id) return res.status(404).send('profile not found')
-    res.send(profile_id)
-})
+// router.get('/findbyid/:id', async (req, res) => {
+
+//     const profile_id = await Candidate.findById(req.params.id)
+//     if (!profile_id) return res.status(404).send('profile not found')
+//     res.send(profile_id)
+// })
 
 module.exports = router
