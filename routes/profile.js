@@ -44,21 +44,19 @@ const readFile = async (req, res) => {
             .then(json => console.log(json))
             .catch(err => console.error('error:' + err));
         // fs.unlinkSync(x['path'])
-        y.push(`https://talentget.b-cdn.net/talent/profileAvatar/${x['originalname']}`)
+        y.push(`https://talentget.b-cdn.net/profileAvatar/${x['originalname']}`)
     });
     // const url = y
 
     const langs = req.body.languages
     const intr = req.body.interest
 
-    // console.log("ggggggggggg", intr)
+
     var lg = []
     for (let a of langs) {
         let speaking = await language.findById(a)
         lg.push(speaking)
     }
-    console.log("zimbolala", lg)
-
 
     var cd = new Candidate({
         fullName: req.body.fullName,
@@ -83,7 +81,7 @@ const readFile = async (req, res) => {
         experience: req.body.experience
 
     })
-    // console.log(req.body.languages)
+    console.log(req.body.languages)
     // cd.languages.push(lg)
     cd.save((err, result) => {
         if (err) {
@@ -122,8 +120,8 @@ router.get('/', async (req, res) => {
 
 })
 router.get('/:id', async (req, res) => {
-    const profile_id = await Candidate.findById(req.params.id)
-    if (!profile_id) return res.status(404).send('movie not valid')
+    const profile_id = await Candidate.findOne({ _id: req.params.id })
+    if (!profile_id) return res.status(404).send('profile not found')
     res.send(profile_id)
 })
 
