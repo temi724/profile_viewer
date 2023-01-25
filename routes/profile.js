@@ -23,29 +23,30 @@ const upload = multer({
     },
 });
 
-const setUpload = upload.any([{ name: 'avatarUrl' }])
+const setUpload = upload.single('avatarUrl')
 const readFile = async (req, res) => {
     const y = []
-    let avatar = req.files
-    avatar.forEach(x => {
-        const buffer = fs.createReadStream((x['path']))
-        const url = `https://storage.bunnycdn.com/talent/profileAvatar/${x['originalname']}`;
-        const options = {
-            method: 'PUT',
-            headers: {
-                'content-type': 'application/octet-stream',
-                AccessKey: process.env.bunny_key
-            },
-            body: buffer
-        };
-        // fs.unlinkSync(x['path'])
-        fetch(url, options)
-            .then(res => console.log("something fisshy"))
-            .then(json => console.log(json))
-            .catch(err => console.error('error:' + err));
-        // fs.unlinkSync(x['path'])
-        y.push(`https://talentget.b-cdn.net/profileAvatar/${x['originalname']}`)
-    });
+    let avatar = req.file
+    // console.log("sjhdsj", avatar)
+    // avatar.forEach(x => {
+    const buffer = fs.createReadStream((avatar['path']))
+    const url = `https://storage.bunnycdn.com/talent/profileAvatar/${avatar['originalname']}`;
+    const options = {
+        method: 'PUT',
+        headers: {
+            'content-type': 'application/octet-stream',
+            AccessKey: process.env.bunny_key
+        },
+        body: buffer
+    };
+    // fs.unlinkSync(x['path'])
+    fetch(url, options)
+        .then(res => console.log("something fisshy"))
+        .then(json => console.log(json))
+        .catch(err => console.error('error:' + err));
+    // fs.unlinkSync(x['path'])
+    y.push(`https://talentget.b-cdn.net/profileAvatar/${avatar['originalname']}`)
+    // });
     // const url = y
 
     const langs = req.body.languages
