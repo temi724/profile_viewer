@@ -25,12 +25,26 @@ const upload = multer({
 
 const setUpload = upload.single('avatarUrl')
 const readFile = async (req, res) => {
+    var dir = './images/resume';
     const y = []
-    let avatar = req.file
-    // console.log("sjhdsj", avatar)
-    // avatar.forEach(x => {
-    const buffer = fs.createReadStream((avatar['path']))
-    const url = `https://storage.bunnycdn.com/talent/profileAvatar/${avatar['originalname']}`;
+    let avatar = req.body.avatarUrl
+    var base64Data = avatar.split(',')[1];
+    const decodeImage = Buffer.from(base64Data, "base64");
+    // console.log("Value Returned", decodeImage)
+    
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir, { recursive: true });
+    }
+    const fileNameOnly = req.body.picturename.split('.')[0];
+    const extention = req.body.picturename.split('.')[1];
+    const fileName = `cv-${fileNameOnly}-${Date.now()}.${extention}`
+    const filePath = `${dir}/${fileName}`
+    fs.writeFileSync(filePath, decodeImage)
+    const buffer = fs.createReadStream((filePath))
+
+    // console.log("Actual Image file", buffer)
+    //console.log("Buffer File Reader", buffer)
+    const url = `https://storage.bunnycdn.com/talent/profileAvatar/${fileName}`;
     const options = {
         method: 'PUT',
         headers: {
@@ -39,15 +53,16 @@ const readFile = async (req, res) => {
         },
         body: buffer
     };
-    // fs.unlinkSync(x['path'])
+    // // // fs.unlinkSync(x['path'])
     fetch(url, options)
         .then(res => console.log("something fisshy"))
         .then(json => console.log(json))
         .catch(err => console.error('error:' + err));
     // fs.unlinkSync(x['path'])
-    y.push(`https://talentget.b-cdn.net/profileAvatar/${avatar['originalname']}`)
-    // });
-    // const url = y
+    ////y.push(`https://talentget.b-cdn.net/profileAvatar/${avatar['originalname']}`)
+    y.push(`https://talentget.b-cdn.net/profileAvatar/${fileName}`)
+    // // // });
+    // // // const url = y
 
     const langs = req.body.languages
     const intr = req.body.interest
@@ -82,6 +97,8 @@ const readFile = async (req, res) => {
         experience: req.body.experience
 
     })
+    
+    fs.unlinkSync(filePath);
     console.log(req.body.languages)
     // cd.languages.push(lg)
     cd.save((err, result) => {
