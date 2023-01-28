@@ -4,21 +4,17 @@ const { languageSchema } = require('./languages')
 const Candidate = mongoose.model('Candidate', new mongoose.Schema({
     fullName: {
         type: String,
-        required: true
     },
     email: {
         type: String,
-        required: true
     },
     phoneNumber: {
         type: String,
-        required: true
     },
     education: [{ type: String }],
-
     interest: [{ type: String }],
     languages: [{ languageSchema }],
-    // languages: [{ types: Schema.Types.ObjectId, ref: 'language' }],
+
     extraVersion: {
         type: Number
     },
@@ -44,7 +40,7 @@ const Candidate = mongoose.model('Candidate', new mongoose.Schema({
         type: Number
     },
 
-    software: [{ title: String, level: String }],
+    software: [{ title: String, level: Number }],
 
     skills: [{
         name: String,
