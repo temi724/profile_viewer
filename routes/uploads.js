@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 var XLSX = require('xlsx');
+const fs = require('fs')
 // const { Movies, validate_movie } = require('../models/moviesmodel')
 const uploadFile = require('../multer')
 // const excelToJson = require('convert-excel-to-json')
@@ -52,13 +53,30 @@ router.put('/skills/:id', async (req, res) => {
 * excel upload for assessments..
 */
 router.post('/', uploadFile.uploadFile.single('upload'), (req, res) => {
-    var workbook = XLSX.readFile(req.file.path);
+    var dir = './images/document';
+    const y = []
+    let avatar = req.body.avatarUrl
+    var base64Data = avatar.split(',')[1];
+    const decodeImage = Buffer.from(base64Data, "base64");
+
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir, { recursive: true });
+    }
+
+    const fileNameOnly = req.body.excelname.split('.')[0];
+    const extention = req.body.excelname.split('.')[1];
+    const fileName = `doc-${fileNameOnly}-${Date.now()}.${extention}`
+    const filePath = `${dir}/${fileName}`
+    fs.writeFileSync(filePath, decodeImage)
+    const buffer = fs.createReadStream((filePath))
+
+    var workbook = XLSX.readFile(filePath);
     // console.log("laaa", workbook)
     var sheet_namelist = workbook.SheetNames;
     var x = 0;
     sheet_namelist.forEach(element => {
         var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_namelist[x]]);
-        accessments.insertMany(xlData, (err, data) => {
+        assessment.insertMany(xlData, (err, data) => {
             if (err) {
                 console.log(err);
             } else {
