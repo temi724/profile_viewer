@@ -2,7 +2,7 @@ const express = require('express')
 const helmet = require('helmet')
 const bodyParser = require('body-parser')
 const app = express()
-const fileUpload = require('express-fileUpload')
+    // const fileUpload = require('express-fileUpload')
 
 
 require('dotenv').config()
