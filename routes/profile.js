@@ -25,14 +25,37 @@ const upload = multer({
 
 const setUpload = upload.single('avatarUrl')
 const readFile = async (req, res) => {
+    // const y = []
+    // let avatar = req.file
+    // console.log("avatar shit", req.body.avatarUrl)
+    // console.log("Shiiiiit", avatar)
+    // avatar.forEach(x => {
+    // const buffer = fs.createReadStream((avatar['path']))
+    // // console.log("Shitttttty", buffer)
+    // const url = `https://storage.bunnycdn.com/talent/profileAvatar/${avatar['originalname']}`;
+    // const options = {
+    //     method: 'PUT',
+    //     headers: {
+    //         'content-type': 'application/octet-stream',
+    //         AccessKey: process.env.bunny_key
+    //     },
+    //     body: buffer
+    // };
+    // // fs.unlinkSync(x['path'])
+    // fetch(url, options)
+    //     .then(res => console.log("something fisshy"))
+    //     .then(json => console.log(json))
+    //     .catch(err => console.error('error:' + err));
+    // // fs.unlinkSync(x['path'])
+    // y.push(`https://talentget.b-cdn.net/profileAvatar/${avatar['originalname']}`)
+    //This code works on the browser
     var dir = './images/resume';
     const y = []
     let avatar = req.body.avatarUrl
     var base64Data = avatar.split(',')[1];
     const decodeImage = Buffer.from(base64Data, "base64");
     // console.log("Value Returned", decodeImage)
-    
-    if (!fs.existsSync(dir)){
+    if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
     const fileNameOnly = req.body.picturename.split('.')[0];
@@ -41,9 +64,6 @@ const readFile = async (req, res) => {
     const filePath = `${dir}/${fileName}`
     fs.writeFileSync(filePath, decodeImage)
     const buffer = fs.createReadStream((filePath))
-
-    // console.log("Actual Image file", buffer)
-    //console.log("Buffer File Reader", buffer)
     const url = `https://storage.bunnycdn.com/talent/profileAvatar/${fileName}`;
     const options = {
         method: 'PUT',
@@ -59,10 +79,14 @@ const readFile = async (req, res) => {
         .then(json => console.log(json))
         .catch(err => console.error('error:' + err));
     // fs.unlinkSync(x['path'])
-    ////y.push(`https://talentget.b-cdn.net/profileAvatar/${avatar['originalname']}`)
+
     y.push(`https://talentget.b-cdn.net/profileAvatar/${fileName}`)
-    // // // });
-    // // // const url = y
+
+
+    //Get The imaage stored on the server...
+
+
+
 
     const langs = req.body.languages
     var lg = []
@@ -93,7 +117,7 @@ const readFile = async (req, res) => {
         experience: req.body.experience
 
     })
-    
+
     fs.unlinkSync(filePath);
     cd.save((err, result) => {
         if (err) {
