@@ -41,6 +41,9 @@ const readFile = async(req, res) => {
     const filePath = `${dir}/${fileName}`
     fs.writeFileSync(filePath, decodeImage)
     const buffer = fs.createReadStream((filePath))
+
+    // console.log("Actual Image file", buffer)
+    //console.log("Buffer File Reader", buffer)
     const url = `https://storage.bunnycdn.com/talent/profileAvatar/${fileName}`;
     const options = {
         method: 'PUT',
@@ -55,8 +58,20 @@ const readFile = async(req, res) => {
         .then(res => console.log("something fisshy"))
         .then(json => console.log(json))
         .catch(err => console.error('error:' + err));
-
+    // fs.unlinkSync(x['path'])
+    ////y.push(`https://talentget.b-cdn.net/profileAvatar/${avatar['originalname']}`)
     y.push(`https://talentget.b-cdn.net/profileAvatar/${fileName}`)
+
+
+    //Get image
+    const url_b = `https://storage.bunnycdn.com/talent/profileAvatar/${fileName}`;
+    const options_b = { method: 'GET', headers: { accept: '*/*', AccessKey: process.env.bunny_key } };
+
+    fetch(url_b, options_b)
+        .then(res => res.json())
+        .then(json => console.log(json, "urrray"))
+        .catch(err => console.error('error:' + err));
+
 
 
     //Get image
@@ -77,29 +92,29 @@ const readFile = async(req, res) => {
         lg.push(speaking)
     }
     var cd = new Candidate({
-            fullName: req.body.fullName,
-            email: req.body.email,
-            phoneNumber: req.body.phoneNumber,
-            education: req.body.education,
-            interest: req.body.interest,
-            extraVersion: req.body.extraVersion,
-            emotionalStability: req.body.emotionalStability,
-            agreeableness: req.body.agreeableness,
-            openess: req.body.openess,
-            conscientiousness: req.body.conscientiousness,
-            english: req.body.english,
-            technical: req.body.technical,
-            OtherArt: req.body.OtherArt,
-            skills: req.body.skills,
-            avatar: y[0],
-            comment: req.body.comment,
-            software: req.body.software,
-            Comment: req.body.comment,
-            languages: lg,
-            experience: req.body.experience
+        fullName: req.body.fullName,
+        email: req.body.email,
+        phoneNumber: req.body.phoneNumber,
+        education: req.body.education,
+        interest: req.body.interest,
+        extraVersion: req.body.extraVersion,
+        emotionalStability: req.body.emotionalStability,
+        agreeableness: req.body.agreeableness,
+        openess: req.body.openess,
+        conscientiousness: req.body.conscientiousness,
+        english: req.body.english,
+        technical: req.body.technical,
+        OtherArt: req.body.OtherArt,
+        skills: req.body.skills,
+        avatar: y[0],
+        comment: req.body.comment,
+        software: req.body.software,
+        Comment: req.body.comment,
+        languages: lg,
+        experience: req.body.experience
 
-        })
-        //remove file from temp path..
+    })
+
     fs.unlinkSync(filePath);
     cd.save((err, result) => {
         if (err) {
