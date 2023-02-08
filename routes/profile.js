@@ -63,25 +63,7 @@ const readFile = async(req, res) => {
     y.push(`https://talentget.b-cdn.net/profileAvatar/${fileName}`)
 
 
-    //Get image
-    const url_b = `https://storage.bunnycdn.com/talent/profileAvatar/${fileName}`;
-    const options_b = { method: 'GET', headers: { accept: '*/*', AccessKey: process.env.bunny_key } };
 
-    fetch(url_b, options_b)
-        .then(res => res.json())
-        .then(json => console.log(json, "urrray"))
-        .catch(err => console.error('error:' + err));
-
-
-
-    //Get image
-    const url_b = `https://storage.bunnycdn.com/talent/profileAvatar/${fileName}`;
-    const options_b = { method: 'GET', headers: { accept: '*/*', AccessKey: process.env.bunny_key } };
-
-    fetch(url_b, options_b)
-        .then(res => res.json())
-        .then(json => console.log(json, "urrray"))
-        .catch(err => console.error('error:' + err));
 
 
     //end line

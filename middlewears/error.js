@@ -5,5 +5,5 @@ module.exports = function(err, req, res, next) {
     console.log(err.message, err)
 
     //Log
-    res.status(500).send('Something went wrong', err, err.message)
+    res.status(500).send('Something went wrong', err.message)
 }
