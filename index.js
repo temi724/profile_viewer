@@ -9,8 +9,12 @@ require('./startup/routes')(app)
 
 
 app.use(express.json())
-app.use(express.urlencoded({ extended: true, limit: '50mb' }))
-app.use(bodyParser.urlencoded({ extended: true, limit: '50mb', parameterLimit: 50000 }));
+app.use(fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 },
+}));
+
+app.use(express.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet())
 
 
