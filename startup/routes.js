@@ -8,8 +8,10 @@ const uploader = require('../routes/uploads')
 
 const cors = require('cors')
 
-module.exports = function (app) {
-    app.use(cors())
+module.exports = function(app) {
+    app.use(cors({
+        origin: '*'
+    }))
     app.use(express.json())
     app.use('/api/admin', admin)
     app.use('/api/profile', profile)
