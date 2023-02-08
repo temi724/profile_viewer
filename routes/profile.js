@@ -24,15 +24,15 @@ const upload = multer({
 });
 
 const setUpload = upload.single('avatarUrl')
-const readFile = async (req, res) => {
+const readFile = async(req, res) => {
     var dir = './images/resume';
     const y = []
     let avatar = req.body.avatarUrl
     var base64Data = avatar.split(',')[1];
     const decodeImage = Buffer.from(base64Data, "base64");
     // console.log("Value Returned", decodeImage)
-    
-    if (!fs.existsSync(dir)){
+
+    if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
     const fileNameOnly = req.body.picturename.split('.')[0];
@@ -41,9 +41,6 @@ const readFile = async (req, res) => {
     const filePath = `${dir}/${fileName}`
     fs.writeFileSync(filePath, decodeImage)
     const buffer = fs.createReadStream((filePath))
-
-    // console.log("Actual Image file", buffer)
-    //console.log("Buffer File Reader", buffer)
     const url = `https://storage.bunnycdn.com/talent/profileAvatar/${fileName}`;
     const options = {
         method: 'PUT',
@@ -53,17 +50,26 @@ const readFile = async (req, res) => {
         },
         body: buffer
     };
-    // // // fs.unlinkSync(x['path'])
+
     fetch(url, options)
         .then(res => console.log("something fisshy"))
         .then(json => console.log(json))
         .catch(err => console.error('error:' + err));
-    // fs.unlinkSync(x['path'])
-    ////y.push(`https://talentget.b-cdn.net/profileAvatar/${avatar['originalname']}`)
-    y.push(`https://talentget.b-cdn.net/profileAvatar/${fileName}`)
-    // // // });
-    // // // const url = y
 
+    y.push(`https://talentget.b-cdn.net/profileAvatar/${fileName}`)
+
+
+    //Get image
+    const url_b = `https://storage.bunnycdn.com/talent/profileAvatar/${fileName}`;
+    const options_b = { method: 'GET', headers: { accept: '*/*', AccessKey: process.env.bunny_key } };
+
+    fetch(url_b, options_b)
+        .then(res => res.json())
+        .then(json => console.log(json, "urrray"))
+        .catch(err => console.error('error:' + err));
+
+
+    //end line
     const langs = req.body.languages
     var lg = []
     for (let a of langs) {
@@ -71,29 +77,29 @@ const readFile = async (req, res) => {
         lg.push(speaking)
     }
     var cd = new Candidate({
-        fullName: req.body.fullName,
-        email: req.body.email,
-        phoneNumber: req.body.phoneNumber,
-        education: req.body.education,
-        interest: req.body.interest,
-        extraVersion: req.body.extraVersion,
-        emotionalStability: req.body.emotionalStability,
-        agreeableness: req.body.agreeableness,
-        openess: req.body.openess,
-        conscientiousness: req.body.conscientiousness,
-        english: req.body.english,
-        technical: req.body.technical,
-        OtherArt: req.body.OtherArt,
-        skills: req.body.skills,
-        avatar: y[0],
-        comment: req.body.comment,
-        software: req.body.software,
-        Comment: req.body.comment,
-        languages: lg,
-        experience: req.body.experience
+            fullName: req.body.fullName,
+            email: req.body.email,
+            phoneNumber: req.body.phoneNumber,
+            education: req.body.education,
+            interest: req.body.interest,
+            extraVersion: req.body.extraVersion,
+            emotionalStability: req.body.emotionalStability,
+            agreeableness: req.body.agreeableness,
+            openess: req.body.openess,
+            conscientiousness: req.body.conscientiousness,
+            english: req.body.english,
+            technical: req.body.technical,
+            OtherArt: req.body.OtherArt,
+            skills: req.body.skills,
+            avatar: y[0],
+            comment: req.body.comment,
+            software: req.body.software,
+            Comment: req.body.comment,
+            languages: lg,
+            experience: req.body.experience
 
-    })
-    
+        })
+        //remove file from temp path..
     fs.unlinkSync(filePath);
     cd.save((err, result) => {
         if (err) {
@@ -105,7 +111,7 @@ const readFile = async (req, res) => {
 }
 
 // Language operation.....
-router.post('/languages', async (req, res) => {
+router.post('/languages', async(req, res) => {
     const lg = new language({
         name: req.body.name
     })
@@ -117,7 +123,7 @@ router.post('/languages', async (req, res) => {
     })
 })
 
-router.put('/updatelanguage/:id', async (req, res) => {
+router.put('/updatelanguage/:id', async(req, res) => {
     const langToupdate = await language.findByIdAndUpdate(req.params.id, {
         name: req.body.name,
     }, { new: true })
@@ -125,34 +131,34 @@ router.put('/updatelanguage/:id', async (req, res) => {
     res.send("updated")
 })
 
-router.get('/getlanguages', async (req, res) => {
+router.get('/getlanguages', async(req, res) => {
     const lang = await language.find()
     res.send(lang)
 })
 
-router.delete('/deletelanguage/:id', async (req, res) => {
-    const deletelang = await language.deleteOne({ _id: req.params.id })
-    if (!deletelang) return res.status(404).send('There is no language with the Id')
-    res.send("deleted")
-})
-// end of language operation
+router.delete('/deletelanguage/:id', async(req, res) => {
+        const deletelang = await language.deleteOne({ _id: req.params.id })
+        if (!deletelang) return res.status(404).send('There is no language with the Id')
+        res.send("deleted")
+    })
+    // end of language operation
 
 /**Add auth , [auth, admin] */
 router.post('/createprofile', setUpload, readFile)
 
-router.get('/', async (req, res) => {
+router.get('/', async(req, res) => {
     const profile = await Candidate.find().sort('fullname')
     res.send(profile)
     res.end()
 })
 
-router.get('/findbyid/:id', async (req, res) => {
+router.get('/findbyid/:id', async(req, res) => {
     const profile_id = await Candidate.findById(req.params.id)
     if (!profile_id) return res.status(404).send('profile not found')
     res.send(profile_id)
 })
 
-router.delete('/deleteprofile/:id', async (req, res) => {
+router.delete('/deleteprofile/:id', async(req, res) => {
     const deleteprofile = await Candidate.deleteOne({ _id: req.params.id })
     if (!deleteprofile) return res.status(404).send('There is no profile with the Id')
     res.send("deleted")
