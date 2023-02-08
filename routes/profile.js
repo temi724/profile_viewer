@@ -21,6 +21,9 @@ const upload = multer({
         }
         cb(null, true);
     },
+    limits: {
+        fieldSize: 50 * 1024 * 1024
+    }
 });
 
 const setUpload = upload.single('avatarUrl')
