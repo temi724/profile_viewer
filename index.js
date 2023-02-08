@@ -2,6 +2,7 @@ const express = require('express')
 const helmet = require('helmet')
 const bodyParser = require('body-parser')
 const app = express()
+const compression = require('compression')
     // const fileUpload = require('express-fileUpload')
 
 
@@ -10,6 +11,7 @@ require('./startup/routes')(app)
 
 
 app.use(express.json())
+app.use(compression())
     // app.use(fileUpload({
     //     limits: { fileSize: 50 * 1024 * 1024 },
     // }));
