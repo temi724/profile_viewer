@@ -2,6 +2,7 @@ const express = require('express')
 const helmet = require('helmet')
 const bodyParser = require('body-parser')
 const app = express()
+const fileUpload = require('express-fileUpload')
 
 
 require('dotenv').config()
@@ -9,12 +10,16 @@ require('./startup/routes')(app)
 
 
 app.use(express.json())
-app.use(fileUpload({
-    limits: { fileSize: 50 * 1024 * 1024 },
-}));
+    // app.use(fileUpload({
+    //     limits: { fileSize: 50 * 1024 * 1024 },
+    // }));
 
 app.use(express.urlencoded({ extended: true }))
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    limit: "50mb",
+    extended: false
+}));
+app.use(bodyParser.json({ limit: "50mb" }));
 app.use(helmet())
 
 
