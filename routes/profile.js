@@ -45,7 +45,7 @@ const readFile = async (req, res) => {
     // fetch(url, options)
     //     .then(res => console.log("something fisshy"))
     //     .then(json => console.log(json))
-    //     .catch(err => console.error('error:' + err));
+    //     .catch(err => console.error('error:' + err));  
     // // fs.unlinkSync(x['path'])
     // y.push(`https://talentget.b-cdn.net/profileAvatar/${avatar['originalname']}`)
     //This code works on the browser
