@@ -112,7 +112,7 @@ const readFile = async (req, res) => {
         avatar: y[0],
         comment: req.body.comment,
         software: req.body.software,
-        Comment: req.body.comment,
+        comment: req.body.comment,
         languages: lg,
         experience: req.body.experience
 
