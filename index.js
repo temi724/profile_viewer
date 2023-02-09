@@ -9,21 +9,14 @@ const compression = require('compression')
 require('dotenv').config()
 require('./startup/routes')(app)
 
-
+// app.use(express.l)
 app.use(express.json())
 app.use(compression())
-    // app.use(fileUpload({
-    //     limits: { fileSize: 50 * 1024 * 1024 },
-    // }));
 
 app.use(express.urlencoded({ extended: true }))
-    // app.use(bodyParser.urlencoded({
-    //     limit: "50mb",
-    //     extended: false
-    // }));
-    // app.use(bodyParser.json({ limit: "50mb" }));
-app.use(bodyParser.json({ limit: '2mb' }));
-app.use(bodyParser.urlencoded({ limit: '2mb', extended: true }));
+
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.use(helmet())
 
 
