@@ -55,7 +55,8 @@ const Candidate = mongoose.model('Candidate', new mongoose.Schema({
     experience: [{ title: String, duration: String }],
     comment: {
         type: String
-    }
+    },
+    softwareMain: [{ title: String, level: String }]
 
 }))
 exports.Candidate = Candidate
