@@ -96,7 +96,8 @@ const readFile = async(req, res) => {
         software: req.body.software,
         Comment: req.body.comment,
         languages: lg,
-        experience: req.body.experience
+        experience: req.body.experience,
+        softwareMain: req.body.softwareMain
 
     })
 
