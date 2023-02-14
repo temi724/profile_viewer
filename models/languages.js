@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 
 const langugeSchema = new mongoose.Schema({
-    name: {
-        type: String
-    }
+    name: [
+        { type: String }
+    ]
 })
 
 const language = mongoose.model('language', langugeSchema)
