@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 
 const assessmentSChema = new mongoose.Schema({
-    name: [{
+    name: {
         type: String
-    }]
+    }
 })
 
 const assessments = mongoose.model('assessments', assessmentSChema)

@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 
 const interestSchema = new mongoose.Schema({
-    name: [{
+    name: {
         type: String
-    }]
+    }
 })
 
 const interests = mongoose.model('interests', interestSchema)

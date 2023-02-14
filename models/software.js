@@ -1,9 +1,7 @@
 const mongoose = require('mongoose')
 
 const softwareSchema = new mongoose.Schema({
-    name: [{
-        type: String
-    }],
+    name: { type: String },
 
 })
 

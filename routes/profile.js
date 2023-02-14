@@ -128,30 +128,31 @@ const readFile = async (req, res) => {
  *            description:Return all Images
  */
 router.post('/languages', async (req, res) => {
-    const lg = new language({
-        name: req.body.name
+    language.insertMany(req.body).then(function () {
+        res.send("Good")
+    }).catch(function () {
+        console.log("something bad")
     })
-    lg.save((err, result) => {
-        if (err) {
-            console.log("shit")
-        }
-        res.send("hi")
-    })
+    // const lg = new language({
+    //     name: req.body.name
+    // })
+    // lg.save((err, result) => {
+    //     if (err) {
+    //         console.log("shit")
+    //     }
+    //     res.send("hi")
+    // })
 })
 
 
 router.post('/interests', async (req, res) => {
-    const lg = new interests({
-        name: req.body.name
-    })
-    lg.save((err, result) => {
-        if (err) {
-            console.log("shit")
-        }
-        res.send("hi")
+    interests.insertMany(req.body).then(function () {
+        res.send("Good")
+    }).catch(function () {
+        console.log("something bad")
     })
 })
-router.get('/interests', async (req, res) => {
+router.get('/getinterests', async (req, res) => {
     const lang = await interests.find()
     res.send(lang)
 })
@@ -165,14 +166,10 @@ router.put('/updateinterests/:id', async (req, res) => {
 })
 //Software.....
 router.post('/software', async (req, res) => {
-    const lg = new software({
-        name: req.body.name
-    })
-    lg.save((err, result) => {
-        if (err) {
-            console.log("shit")
-        }
-        res.send("hi")
+    software.insertMany(req.body).then(function () {
+        res.send("Good")
+    }).catch(function () {
+        console.log("something bad")
     })
 })
 
@@ -183,27 +180,19 @@ router.get('/getsoftware', async (req, res) => {
 
 
 router.post('/skills', async (req, res) => {
-    const lg = new skills({
-        name: req.body.name
-    })
-    lg.save((err, result) => {
-        if (err) {
-            console.log("shit")
-        }
-        res.send("hi")
+    skills.insertMany(req.body).then(function () {
+        res.send("Good")
+    }).catch(function () {
+        console.log("something bad")
     })
 })
 
 
 router.post('/assessments', async (req, res) => {
-    const lg = new assessments({
-        name: req.body.name
-    })
-    lg.save((err, result) => {
-        if (err) {
-            console.log("shit")
-        }
-        res.send("hi")
+    assessments.insertMany(req.body).then(function () {
+        res.send("Good")
+    }).catch(function () {
+        console.log("something bad")
     })
 })
 
