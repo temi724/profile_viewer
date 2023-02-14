@@ -6,6 +6,6 @@ const interestSchema = new mongoose.Schema({
     }
 })
 
-const interests =  mongoose.model('interests', interestSchema)
+const interests = mongoose.model('interests', interestSchema)
 exports.interests = interests
 exports.interestSchema = interestSchema

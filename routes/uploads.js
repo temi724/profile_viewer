@@ -5,7 +5,7 @@ const fs = require('fs')
 // const { Movies, validate_movie } = require('../models/moviesmodel')
 const uploadFile = require('../multer')
 // const excelToJson = require('convert-excel-to-json')
-const { assessment } = require('../models/assessments')
+// const { assessment } = require('../models/assessments')
 const { software } = require('../models/software');
 const { skills } = require('../models/skills');
 const { interests } = require('../models/interest');
@@ -13,45 +13,45 @@ const { interests } = require('../models/interest');
 /**
  *skills operations CRUD
  */
-router.post('/skills', async (req, res) => {
-    const sk = new skills({
-        name: req.body.name
-    })
-    sk.save((err, res) => {
-        if (err) {
-            res.send("something is wrong")
-        }
-        return res.status(200).send("thanks");
-    })
-})
+// router.post('/skills', async (req, res) => {
+//     const sk = new skills({
+//         name: req.body.name
+//     })
+//     sk.save((err, res) => {
+//         if (err) {
+//             res.send("something is wrong")
+//         }
+//         return res.status(200).send("thanks");
+//     })
+// })
 
-router.get('/skills', async (req, res) => {
-    const sk = await skills.find().sort('name')
-    res.send(sk)
-    res.end()
-})
+// router.get('/skills', async (req, res) => {
+//     const sk = await skills.find().sort('name')
+//     res.send(sk)
+//     res.end()
+// })
 
-router.delete('/skills/:id', async (req, res) => {
-    const deletesk = await skills.deleteOne({ _id: req.params.id })
-    if (!deletesk) return res.status(404).send('There is no skills  with the Id')
-    res.send("deleted")
-})
+// router.delete('/skills/:id', async (req, res) => {
+//     const deletesk = await skills.deleteOne({ _id: req.params.id })
+//     if (!deletesk) return res.status(404).send('There is no skills  with the Id')
+//     res.send("deleted")
+// })
 
-router.put('/skills/:id', async (req, res) => {
-    const skillsToupdate = await skills.findByIdAndUpdate(req.params.id, {
-        name: req.body.name,
-    }, { new: true })
-    if (!skillsToupdate) return res.status(404).send("dosent exist")
-    res.send("updated")
+// router.put('/skills/:id', async (req, res) => {
+//     const skillsToupdate = await skills.findByIdAndUpdate(req.params.id, {
+//         name: req.body.name,
+//     }, { new: true })
+//     if (!skillsToupdate) return res.status(404).send("dosent exist")
+//     res.send("updated")
 
-})
+// })
 
 //end of skills operation...
 
 
 /*
-* excel upload for assessments..
-*/
+ * excel upload for assessments..
+ */
 router.post('/', uploadFile.uploadFile.single('upload'), (req, res) => {
     var dir = './images/document';
     const y = []
@@ -59,7 +59,7 @@ router.post('/', uploadFile.uploadFile.single('upload'), (req, res) => {
     var base64Data = avatar.split(',')[1];
     const decodeImage = Buffer.from(base64Data, "base64");
 
-    if (!fs.existsSync(dir)){
+    if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
 
@@ -227,6 +227,3 @@ router.delete('/deleteinterest/:id', async (req, res) => {
 
 
 module.exports = router
-
-
-

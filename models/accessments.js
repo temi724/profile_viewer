@@ -1,15 +1,11 @@
 const mongoose = require('mongoose')
 
-
-const accessmentSchema = new mongoose.Schema({
+const assessmentSChema = new mongoose.Schema({
     name: {
         type: String
-    },
-    level: {
-        type: Number
     }
 })
 
-const accessment = new mongoose.model('accessment', accessmentSchema)
-exports.accessment = accessment
-exports.accessmentSchema = accessmentSchema
+const assessments = mongoose.model('assessments', assessmentSChema)
+exports.assessments = assessments
+exports.assessmentSChema = assessmentSChema

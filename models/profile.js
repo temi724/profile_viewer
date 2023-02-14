@@ -46,6 +46,7 @@ const Candidate = mongoose.model('Candidate', new mongoose.Schema({
         name: String,
         level: Number
     }],
+    // software: [{ title: String }],
     avatar: {
         type: String
     },

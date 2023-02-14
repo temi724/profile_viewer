@@ -10,6 +10,10 @@ const { languageSchema, language } = require('../models/languages')
 const admin = require('../middlewears/admin')
 const auth = require('../middlewears/auth')
 const { getgid } = require('process')
+const { interests } = require('../models/interest')
+const { software } = require('../models/software')
+const { skills } = require('../models/skills')
+const { assessments } = require('../models/accessments')
 
 const upload = multer({
     storage: multer.diskStorage({}),
@@ -27,7 +31,7 @@ const upload = multer({
 });
 
 const setUpload = upload.single('avatarUrl')
-const readFile = async(req, res) => {
+const readFile = async (req, res) => {
     var dir = './images/resume';
     const y = []
     let avatar = req.body.avatarUrl
@@ -112,7 +116,18 @@ const readFile = async(req, res) => {
 }
 
 // Language operation.....
-router.post('/languages', async(req, res) => {
+//Languages
+/**
+ * @openapi
+ * /languages:
+ *   get:
+ *     summary: Retrieve a list of languages available
+ *     description: .
+ *     responses:
+ *         200:
+ *            description:Return all Images
+ */
+router.post('/languages', async (req, res) => {
     const lg = new language({
         name: req.body.name
     })
@@ -124,7 +139,124 @@ router.post('/languages', async(req, res) => {
     })
 })
 
-router.put('/updatelanguage/:id', async(req, res) => {
+
+router.post('/interests', async (req, res) => {
+    const lg = new interests({
+        name: req.body.name
+    })
+    lg.save((err, result) => {
+        if (err) {
+            console.log("shit")
+        }
+        res.send("hi")
+    })
+})
+router.get('/interests', async (req, res) => {
+    const lang = await interests.find()
+    res.send(lang)
+})
+
+router.put('/updateinterests/:id', async (req, res) => {
+    const intrToUpdate = await interests.findByIdAndUpdate(req.params.id, {
+        name: req.body.name,
+    }, { new: true })
+    if (!intrToUpdate) return res.status(404).send("dosent exist")
+    res.send("updated")
+})
+//Software.....
+router.post('/software', async (req, res) => {
+    const lg = new software({
+        name: req.body.name
+    })
+    lg.save((err, result) => {
+        if (err) {
+            console.log("shit")
+        }
+        res.send("hi")
+    })
+})
+
+router.get('/getsoftware', async (req, res) => {
+    const lang = await software.find()
+    res.send(lang)
+})
+
+
+router.post('/skills', async (req, res) => {
+    const lg = new skills({
+        name: req.body.name
+    })
+    lg.save((err, result) => {
+        if (err) {
+            console.log("shit")
+        }
+        res.send("hi")
+    })
+})
+
+
+router.post('/assessments', async (req, res) => {
+    const lg = new assessments({
+        name: req.body.name
+    })
+    lg.save((err, result) => {
+        if (err) {
+            console.log("shit")
+        }
+        res.send("hi")
+    })
+})
+
+router.get('/assessments', async (req, res) => {
+    const ass = await assessments.find()
+    res.send(ass)
+})
+
+router.delete('/assessments/:id', async (req, res) => {
+    const delSkills = await skills.deleteOne({ _id: req.params.id })
+    if (!delSkills) return res.status(404).send('There is no skills with the Id')
+    res.send("deleted")
+})
+
+router.get('/getSkills', async (req, res) => {
+    const lang = await skills.find()
+    res.send(lang)
+})
+
+
+
+router.delete('/deleteSkills/:id', async (req, res) => {
+    const delSkills = await skills.deleteOne({ _id: req.params.id })
+    if (!delSkills) return res.status(404).send('There is no skills with the Id')
+    res.send("deleted")
+})
+
+
+
+router.put('/updatesoftware/:id', async (req, res) => {
+    const sfToUpdate = await software.findByIdAndUpdate(req.params.id, {
+        name: req.body.name,
+    }, { new: true })
+    if (!sfToUpdate) return res.status(404).send("dosent exist")
+    res.send("updated")
+})
+
+router.delete('/deletesoftware/:id', async (req, res) => {
+    const delSoftware = await software.deleteOne({ _id: req.params.id })
+    if (!delSoftware) return res.status(404).send('There is no language with the Id')
+    res.send("deleted")
+})
+
+
+
+router.delete('/deleteinterests/:id', async (req, res) => {
+    const deleteIntr = await interests.deleteOne({ _id: req.params.id })
+    if (!deleteIntr) return res.status(404).send('There is no language with the Id')
+    res.send("deleted")
+})
+
+
+router.put('/updatelanguage/:id', async (req, res) => {
     const langToupdate = await language.findByIdAndUpdate(req.params.id, {
         name: req.body.name,
     }, { new: true })
@@ -132,34 +264,34 @@ router.put('/updatelanguage/:id', async(req, res) => {
     res.send("updated")
 })
 
-router.get('/getlanguages', async(req, res) => {
+router.get('/getlanguages', async (req, res) => {
     const lang = await language.find()
     res.send(lang)
 })
 
-router.delete('/deletelanguage/:id', async(req, res) => {
-        const deletelang = await language.deleteOne({ _id: req.params.id })
-        if (!deletelang) return res.status(404).send('There is no language with the Id')
-        res.send("deleted")
-    })
-    // end of language operation
+router.delete('/deletelanguage/:id', async (req, res) => {
+    const deletelang = await language.deleteOne({ _id: req.params.id })
+    if (!deletelang) return res.status(404).send('There is no language with the Id')
+    res.send("deleted")
+})
+// end of language operation
 
 /**Add auth , [auth, admin] */
 router.post('/createprofile', setUpload, readFile)
 
-router.get('/', async(req, res) => {
+router.get('/', async (req, res) => {
     const profile = await Candidate.find().sort('fullname')
     res.send(profile)
     res.end()
 })
 
-router.get('/findbyid/:id', async(req, res) => {
+router.get('/findbyid/:id', async (req, res) => {
     const profile_id = await Candidate.findById(req.params.id)
     if (!profile_id) return res.status(404).send('profile not found')
     res.send(profile_id)
 })
 
-router.delete('/deleteprofile/:id', async(req, res) => {
+router.delete('/deleteprofile/:id', async (req, res) => {
     const deleteprofile = await Candidate.deleteOne({ _id: req.params.id })
     if (!deleteprofile) return res.status(404).send('There is no profile with the Id')
     res.send("deleted")
