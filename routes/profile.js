@@ -202,7 +202,7 @@ router.get('/assessments', async (req, res) => {
 })
 
 router.delete('/assessments/:id', async (req, res) => {
-    const delSkills = await skills.deleteOne({ _id: req.params.id })
+    const delSkills = await assessments.deleteOne({ _id: req.params.id })
     if (!delSkills) return res.status(404).send('There is no skills with the Id')
     res.send("deleted")
 })
